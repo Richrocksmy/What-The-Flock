@@ -5,33 +5,43 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Random;
 
 
 public class Bird extends Circle implements EventHandler<ActionEvent> {
 
-  private static final float RADIUS = 6.0f;
-  private static final Color COLOR = Color.CADETBLUE;
-  private static final Pair<Float, Float> START_LOCATION = Pair.of(10.0f, 10.0f);
-
   private Bounds windowBounds;
-  private double dx = 7;
-  private double dy = 3;
+  private double dx;
+  private double dy;
 
   public Bird(Bounds bounds) {
     this.windowBounds = bounds;
-    this.setCenterX(START_LOCATION.getLeft());
-    this.setCenterY(START_LOCATION.getRight());
-    this.setRadius(RADIUS);
-    this.setFill(COLOR);
+
+    Random random = new Random();
+    this.setCenterX(Math.abs(random.nextFloat()*100));
+    this.setCenterY(Math.abs(random.nextFloat()*100));
+
+    this.dx = random.nextDouble();
+    this.dy = random.nextDouble();
+
+    this.setRadius(random.nextFloat() * 10);
+    this.setFill(getColor(random.nextInt(6)));
+  }
+
+  private Color getColor(int colorValue) {
+    switch(colorValue) {
+      case 0: return Color.AZURE;
+      case 1: return Color.CORAL;
+      case 2: return Color.CRIMSON;
+      case 3: return Color.LEMONCHIFFON;
+      case 4: return Color.BLUEVIOLET;
+      default: return Color.DARKSEAGREEN;
+    }
   }
 
   @Override
   public void handle(ActionEvent event) {
-    System.out.print("x:" + getLayoutX());
-    System.out.print("y:" + getLayoutY());
-    System.out.println("----");
-
     setLayoutX(getLayoutX() + dx);
     setLayoutY(getLayoutY() + dy);
 
